@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaleidadope — Creative Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Cormorant+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --kb-bg:       #141414;
+      --kb-surface:  #202125;
+      --kb-mid:      #2c2e2d;
+      --kb-muted:    #464847;
+      --kb-gray:     #827d7d;
+      --kb-taupe:    #a49894;
+      --kb-sand:     #d0c6b0;
+      --kb-cobalt:   #3c53ce;
+      --kb-pink:     #d53e84;
+      --kb-red:      #e44326;
+      --kb-orange:   #f8812f;
+      --kb-yellow:   #ffd340;
+      --kb-green:    #57b069;
+      --kb-sky:      #82c7eb;
+      --kb-lavender: #797dde;
+      --kb-hotpink:  #f34f6f;
+      --kb-coral:    #f07a5e;
+      --kb-cream:    #e8dcad;
+      --kb-teal:     #79d8a9;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--kb-bg);
+      font-family: 'Space Mono', monospace;
+      color: var(--kb-sand);
+    }
+
+    .hub-shell {
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .hub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--kb-muted);
+    }
+
+    .hub-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      letter-spacing: 7px;
+      background: linear-gradient(90deg, var(--kb-yellow), var(--kb-orange), var(--kb-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .hub-subtitle {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--kb-gray);
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .hub-clock { text-align: right; }
+
+    .hub-time {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--kb-gray);
+      letter-spacing: 3px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .hub-date {
+      font-size: 9px;
+      color: var(--kb-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Grid */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .hub-card {
+      background: var(--kb-surface);
+      border: 1px solid var(--kb-muted);
+      border-radius: 4px;
+      padding: 1.25rem 1.35rem;
+    }
+
+    .card-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--kb-taupe);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .accent-bar { display: inline-block; width: 14px; height: 2px; }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    /* Projects */
+    .project-list { display: flex; flex-direction: column; gap: 0.55rem; }
+
+    .project-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0.8rem;
+      background: var(--kb-mid);
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+
+    .project-item:hover { background: #363636; }
+
+    .project-name {
+      font-family: 'Cormorant SC', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--kb-sand);
+      letter-spacing: 0.5px;
+    }
+
+    .project-status {
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      flex-shrink: 0;
+    }
+
+    .p-arcana   { border-color: var(--kb-yellow); }
+    .p-devotion { border-color: var(--kb-lavender); }
+    .p-shop     { border-color: var(--kb-green); }
+    .p-paris    { border-color: var(--kb-pink); }
+
+    .s-transit { background: rgba(255,211,64,0.15);  color: var(--kb-yellow); }
+    .s-writing { background: rgba(121,125,222,0.2);  color: var(--kb-lavender); }
+    .s-live    { background: rgba(87,176,105,0.2);   color: var(--kb-green); }
+    .s-pre     { background: rgba(213,62,132,0.2);   color: var(--kb-pink); }
+
+    /* Moon */
+    .moon-widget { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .moon-face { width: 56px; height: 56px; flex-shrink: 0; margin-top: 2px; }
+
+    .moon-phase-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 17px;
+      color: var(--kb-cream);
+      line-height: 1.1;
+      margin-bottom: 3px;
+    }
+
+    .moon-sign   { font-size: 9px; color: var(--kb-gray); letter-spacing: 1px; margin-bottom: 5px; }
+    .moon-energy { font-size: 9px; color: var(--kb-teal); letter-spacing: 1px; }
+
+    .transits-divider { border: none; border-top: 1px solid var(--kb-muted); margin: 0.85rem 0; }
+    .transits-label   { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--kb-muted); margin-bottom: 0.7rem; }
+
+    .transit-item { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 0.6rem; }
+    .transit-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+    .transit-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--kb-sand);
+    }
+
+    .transit-text em { font-style: italic; color: var(--kb-taupe); font-size: 12px; }
+
+    .astro-row { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 0.7rem; }
+
+    .astro-pill {
+      font-size: 9px;
+      padding: 3px 10px;
+      border: 1px solid var(--kb-muted);
+      border-radius: 2px;
+      color: var(--kb-taupe);
+      letter-spacing: 1px;
+    }
+
+    .astro-pill b { color: var(--kb-sky); margin-right: 3px; }
+
+    /* Intention */
+    .intention-area {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--kb-cream);
+      resize: none;
+      outline: none;
+      line-height: 1.7;
+      min-height: 64px;
+    }
+
+    .intention-area::placeholder { color: rgba(208,198,176,0.2); }
+
+    .intention-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--kb-muted);
+    }
+
+    .save-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--kb-yellow);
+      color: var(--kb-yellow);
+      padding: 5px 14px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s;
+    }
+
+    .save-btn:hover { background: rgba(255,211,64,0.1); }
+    .word-count { font-size: 9px; color: var(--kb-muted); letter-spacing: 1px; }
+
+    /* Apple Music */
+    .am-widget {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+
+    .am-logo {
+      width: 60px; height: 60px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #fc3c44, #c3224a);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .am-logo svg { width: 34px; height: 34px; }
+    .am-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--kb-gray); margin-bottom: 3px; }
+    .am-name  { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 18px; color: var(--kb-cream); }
+
+    .am-open-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fc3c44, #c3224a);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 22px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .am-open-btn:hover { opacity: 0.85; }
+
+    /* Quick Links */
+    .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0.6rem 0.8rem;
+      background: var(--kb-mid);
+      border: 1px solid var(--kb-muted);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      color: var(--kb-sand);
+    }
+
+    .quick-link:hover { background: #363636; border-color: var(--kb-taupe); }
+
+    .ql-icon {
+      width: 24px; height: 24px;
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .ql-text { font-size: 10px; letter-spacing: 0.3px; }
+
+    /* Pulse dot */
+    .pulse { animation: blink 2s ease-in-out infinite; display: inline-block; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    /* Saved toast */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--kb-surface);
+      border: 1px solid var(--kb-green);
+      color: var(--kb-green);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border-radius: 3px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+<div class="hub-shell">
+
+  <div class="hub-header">
+    <div>
+      <div class="hub-title">KALEIDADOPE</div>
+      <div class="hub-subtitle">Creative Command Center</div>
+    </div>
+    <div class="hub-clock">
+      <div class="hub-time" id="clock">--:--</div>
+      <div class="hub-date" id="dateline">-- -- --</div>
+    </div>
+  </div>
+
+  <div class="hub-grid">
+
+    <!-- Active Projects -->
+    <div class="hub-card span-2">
+      <div class="card-label">
+        <span class="accent-bar" style="background:var(--kb-yellow)"></span>Active Projects
+      </div>
+      <div class="project-list">
+        <a class="project-item p-arcana" href="https://kaleidadope.com/arcana" target="_blank">
+          <div class="project-name">Arcana Oracle Deck</div>
+          <div class="project-status s-transit">In Transit</div>
+        </a>
+        <div class="project-item p-devotion">
+          <div class="project-name">Devotion — Poetry Collection</div>
+          <div class="project-status s-writing">Writing</div>
+        </div>
+        <a class="project-item p-shop" href="https://kaleidadope.com" target="_blank">
+          <div class="project-name">Kaleidadope Shop</div>
+          <div class="project-status s-live">Live</div>
+        </a>
+        <div class="project-item p-paris">
+          <div class="project-name">Paris Retail Pitch</div>
+          <div class="project-status s-pre">Pre-Launch</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Moon & Sky -->
+    <div class="hub-card">
+      <div class="card-label">
+        <span class="accent-bar" style="background:var(--kb-lavender)"></span>
+        Moon & Sky <span class="pulse" style="color:var(--kb-teal);font-size:10px;margin-left:2px;">●</span>
+      </div>
+      <div class="moon-widget">
+        <svg class="moon-face" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="30" r="26" fill="rgba(121,125,222,0.1)" stroke="rgba(121,125,222,0.35)" stroke-width="1"/>
+          <path id="moonPath" d="M30 6 C19 6 10 15 10 26 C10 39 19 50 30 50 C33 50 36 49 39 47 C34 46 30 42 30 36 C30 27 37 20 46 19 C43 12 37 6 30 6Z" fill="rgba(232,220,173,0.45)" stroke="rgba(232,220,173,0.7)" stroke-width="0.5"/>
+        </svg>
+        <div>
+          <div class="moon-phase-name" id="moonPhase">—</div>
+          <div class="moon-sign" id="moonSign">Calculating...</div>
+          <div class="moon-energy" id="moonEnergy"></div>
+        </div>
+      </div>
+      <hr class="transits-divider">
+      <div class="transits-label">Your transits today</div>
+      <div class="transit-item">
+        <div class="transit-dot" style="background:var(--kb-coral)"></div>
+        <div class="transit-text">
+          <strong style="color:var(--kb-coral)">Mars enters Pisces</strong> — ignites your natal Sun &amp; Mercury. Creative fire, poetic voice, unstoppable momentum. <em>Act on what's been forming.</em>
+        </div>
+      </div>
+      <div class="transit-item">
+        <div class="transit-dot" style="background:var(--kb-lavender)"></div>
+        <div class="transit-text">
+          <strong style="color:var(--kb-lavender)">Full Moon conjunct natal Pluto</strong> — illuminates your 29° Pluto in Libra. Deep transformation surfaces. <em>This is a power moment.</em>
+        </div>
+      </div>
+      <div class="transit-item">
+        <div class="transit-dot" style="background:var(--kb-yellow)"></div>
+        <div class="transit-text">
+          <strong style="color:var(--kb-yellow)">Saturn square natal Saturn</strong> — restructuring your discipline. The work you're building now has staying power. <em>Trust the foundation.</em>
+        </div>
+      </div>
+      <div class="astro-row">
+        <div class="astro-pill"><b>☀</b>Pisces</div>
+        <div class="astro-pill"><b>↑</b>Virgo</div>
+        <div class="astro-pill"><b>♀</b>Aries</div>
+      </div>
+    </div>
+
+    <!-- Intention -->
+    <div class="hub-card span-2">
+      <div class="card-label">
+        <span class="accent-bar" style="background:var(--kb-pink)"></span>Today's Intention
+      </div>
+      <textarea class="intention-area" id="intention" placeholder="Set your creative intention for today..." rows="3"></textarea>
+      <div class="intention-footer">
+        <div class="word-count" id="wc">0 words</div>
+        <button class="save-btn" onclick="saveIntention()">Save</button>
+      </div>
+    </div>
+
+    <!-- Apple Music -->
+    <div class="hub-card">
+      <div class="card-label">
+        <span class="accent-bar" style="background:var(--kb-hotpink)"></span>Music
+      </div>
+      <div class="am-widget">
+        <div class="am-logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 17V7l11-2v10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="6.5" cy="17" r="2.5" fill="white"/>
+            <circle cx="17.5" cy="15" r="2.5" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="am-label">Open in</div>
+          <div class="am-name">Apple Music</div>
+        </div>
+        <a class="am-open-btn" href="https://music.apple.com" target="_blank">Open Apple Music</a>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="hub-card span-3">
+      <div class="card-label">
+        <span class="accent-bar" style="background:var(--kb-cobalt)"></span>Quick Links
+      </div>
+      <div class="links-grid">
+        <a class="quick-link" href="https://kaleidadope.com" target="_blank">
+          <div class="ql-icon" style="background:rgba(255,211,64,0.15);color:var(--kb-yellow);">K</div>
+          <div class="ql-text">Kaleidadope.com</div>
+        </a>
+        <a class="quick-link" href="https://kaleidadope.com/arcana" target="_blank">
+          <div class="ql-icon" style="background:rgba(121,125,222,0.2);color:var(--kb-lavender);">A</div>
+          <div class="ql-text">ARCANA Page</div>
+        </a>
+        <a class="quick-link" href="https://faire.com" target="_blank">
+          <div class="ql-icon" style="background:rgba(130,199,235,0.15);color:var(--kb-sky);">F</div>
+          <div class="ql-text">Faire Wholesale</div>
+        </a>
+        <a class="quick-link" href="https://substack.com" target="_blank">
+          <div class="ql-icon" style="background:rgba(228,67,38,0.15);color:var(--kb-red);">S</div>
+          <div class="ql-text">Substack — Devotion</div>
+        </a>
+        <a class="quick-link" href="https://shopify.com/admin" target="_blank">
+          <div class="ql-icon" style="background:rgba(121,216,169,0.15);color:var(--kb-teal);">Sh</div>
+          <div class="ql-text">Shopify Admin</div>
+        </a>
+        <a class="quick-link" href="https://claude.ai" target="_blank">
+          <div class="ql-icon" style="background:rgba(213,62,132,0.15);color:var(--kb-pink);">✦</div>
+          <div class="ql-text">Ask Claude for help</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast">Intention saved ✓</div>
+
+<script>
+  // Clock
+  function tick() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('clock').textContent = h + ':' + m;
+    const days   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const now2   = new Date();
+    document.getElementById('dateline').textContent =
+      days[now2.getDay()] + ' · ' + months[now2.getMonth()] + ' ' + now2.getDate() + ' · ' + now2.getFullYear();
+  }
+  tick();
+  setInterval(tick, 10000);
+
+  // Moon phase
+  function getMoonPhase() {
+    const known = new Date(2000, 0, 6);
+    const diff  = (new Date() - known) / 86400000;
+    const cycle = diff % 29.53;
+    if (cycle < 1.85)  return ['New Moon',        'Libra',   'Release · Renew · Begin'];
+    if (cycle < 7.38)  return ['Waxing Crescent',  'Scorpio', 'Plant · Intend · Emerge'];
+    if (cycle < 9.22)  return ['First Quarter',    'Capricorn','Act · Commit · Build'];
+    if (cycle < 14.77) return ['Waxing Gibbous',   'Pisces',  'Build · Refine · Persist'];
+    if (cycle < 16.61) return ['Full Moon',         'Libra',   'Release · Rebalance · Illuminate'];
+    if (cycle < 22.15) return ['Waning Gibbous',   'Taurus',  'Gratitude · Share · Reflect'];
+    if (cycle < 23.99) return ['Last Quarter',      'Cancer',  'Release · Let Go · Realign'];
+    return               ['Waning Crescent',        'Virgo',   'Rest · Retreat · Dream'];
+  }
+
+  const [phase, sign, energy] = getMoonPhase();
+  document.getElementById('moonPhase').textContent  = phase;
+  document.getElementById('moonSign').textContent   = 'Moon in ' + sign;
+  document.getElementById('moonEnergy').textContent = energy;
+
+  // Intention — persist with localStorage
+  const intentionEl = document.getElementById('intention');
+  const savedText   = localStorage.getItem('kb-intention-' + new Date().toDateString());
+  if (savedText) intentionEl.value = savedText;
+
+  intentionEl.addEventListener('input', function() {
+    const words = this.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('wc').textContent = words + (words === 1 ? ' word' : ' words');
+  });
+
+  function saveIntention() {
+    localStorage.setItem('kb-intention-' + new Date().toDateString(), intentionEl.value);
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>

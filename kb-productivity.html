@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KB — Mind & Growth</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --f-bg:           #04080f;
+      --f-surface:      #080f1a;
+      --f-panel:        #0a1628;
+      --f-border:       rgba(0,210,255,0.12);
+      --f-border-bright:rgba(0,210,255,0.35);
+      --f-cyan:         #00d2ff;
+      --f-cyan-dim:     rgba(0,210,255,0.5);
+      --f-cyan-glow:    rgba(0,210,255,0.08);
+      --f-violet:       #7b2fff;
+      --f-violet-dim:   rgba(123,47,255,0.5);
+      --f-violet-glow:  rgba(123,47,255,0.08);
+      --f-green:        #00ff9d;
+      --f-amber:        #ffb300;
+      --f-amber-dim:    rgba(255,179,0,0.5);
+      --f-pink:         #ff2d9b;
+      --f-pink-dim:     rgba(255,45,155,0.5);
+      --f-white:        #e8f4ff;
+      --f-muted:        rgba(232,244,255,0.35);
+      --f-dim:          rgba(232,244,255,0.15);
+    }
+
+    html, body { height: 100%; background: var(--f-bg); font-family: 'Rajdhani', sans-serif; color: var(--f-white); }
+
+    body {
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,210,255,0.015) 3px, rgba(0,210,255,0.015) 4px
+      );
+    }
+
+    .dash { min-height: 100vh; padding: 2rem; }
+
+    /* Header */
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--f-border-bright);
+      position: relative;
+    }
+
+    .dash-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 120px; height: 1px;
+      background: var(--f-cyan);
+    }
+
+    .dash-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 5px;
+      color: var(--f-cyan);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .dash-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--f-white);
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .dash-name span { color: var(--f-cyan); }
+
+    .dash-time {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 34px;
+      color: var(--f-cyan);
+      letter-spacing: 3px;
+      text-align: right;
+      line-height: 1;
+    }
+
+    .dash-date {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--f-muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    /* Grid */
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .panel {
+      background: var(--f-panel);
+      border: 1px solid var(--f-border);
+      border-radius: 2px;
+      padding: 1.25rem 1.35rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 10px; height: 10px;
+      border-top: 2px solid var(--f-cyan);
+      border-left: 2px solid var(--f-cyan);
+    }
+
+    .panel::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 10px; height: 10px;
+      border-bottom: 2px solid var(--f-cyan);
+      border-right: 2px solid var(--f-cyan);
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    .panel-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 8px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--f-muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .label-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Claude Tips */
+    .claude-tip {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--f-white);
+      margin-bottom: 1rem;
+    }
+
+    .claude-tip strong { color: var(--f-cyan); font-weight: 600; }
+    .claude-tip code {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      background: rgba(0,210,255,0.08);
+      padding: 1px 5px;
+      border-radius: 2px;
+      color: var(--f-cyan);
+    }
+
+    .tip-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--f-border);
+    }
+
+    .tip-counter {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--f-dim);
+      letter-spacing: 2px;
+    }
+
+    .tip-btns { display: flex; gap: 6px; }
+
+    .icon-btn {
+      background: none;
+      border: 1px solid var(--f-border-bright);
+      color: var(--f-cyan);
+      font-size: 11px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1px;
+      border-radius: 1px;
+      transition: all 0.15s;
+    }
+
+    .icon-btn:hover { background: var(--f-cyan-glow); border-color: var(--f-cyan); }
+
+    .try-btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 7px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--f-cyan-glow);
+      border: 1px solid var(--f-cyan-dim);
+      color: var(--f-cyan);
+      padding: 6px 14px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .try-btn:hover { background: rgba(0,210,255,0.15); border-color: var(--f-cyan); }
+
+    /* French */
+    .french-mode-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+
+    .mode-tab {
+      font-family: 'Orbitron', monospace;
+      font-size: 7px;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      border: 1px solid var(--f-border);
+      background: none;
+      color: var(--f-muted);
+      cursor: pointer;
+      border-radius: 1px;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+
+    .mode-tab.active {
+      border-color: var(--f-violet-dim);
+      color: var(--f-violet);
+      background: var(--f-violet-glow);
+    }
+
+    .french-content { min-height: 100px; }
+
+    .french-phrase { font-size: 22px; font-weight: 600; color: var(--f-white); margin-bottom: 4px; line-height: 1.3; }
+    .french-phonetic { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--f-violet); letter-spacing: 1px; margin-bottom: 8px; }
+    .french-translation { font-size: 13px; color: var(--f-muted); font-style: italic; }
+
+    .vocab-word { font-size: 30px; font-weight: 700; color: var(--f-white); margin-bottom: 3px; }
+    .vocab-type { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--f-violet); letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+    .vocab-example { font-size: 13px; color: var(--f-muted); line-height: 1.6; font-style: italic; }
+
+    .french-quiz-prompt { font-size: 14px; color: var(--f-white); margin-bottom: 10px; line-height: 1.6; }
+
+    .french-input {
+      width: 100%;
+      background: rgba(123,47,255,0.05);
+      border: 1px solid var(--f-border);
+      border-radius: 1px;
+      color: var(--f-white);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      padding: 8px 10px;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 8px;
+    }
+
+    .french-input:focus { border-color: var(--f-violet-dim); }
+    .french-input::placeholder { color: var(--f-dim); }
+
+    .check-btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 7px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--f-violet-glow);
+      border: 1px solid var(--f-violet-dim);
+      color: var(--f-violet);
+      padding: 7px 14px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: all 0.15s;
+    }
+
+    .check-btn:hover { background: rgba(123,47,255,0.15); }
+
+    .quiz-result {
+      font-size: 12px;
+      margin-top: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1px;
+      min-height: 18px;
+    }
+
+    .result-correct { color: var(--f-green); }
+    .result-wrong   { color: #ff2d9b; }
+
+    .next-btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 7px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--f-border-bright);
+      color: var(--f-muted);
+      padding: 5px 12px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: all 0.15s;
+      margin-top: 12px;
+    }
+
+    .next-btn:hover { color: var(--f-violet); border-color: var(--f-violet-dim); }
+
+    /* Deep Dives */
+    .dive-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+
+    .dive-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.75rem;
+      background: rgba(0,210,255,0.03);
+      border: 1px solid var(--f-border);
+      border-left: 2px solid var(--f-cyan-dim);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .dive-item:hover { background: var(--f-cyan-glow); }
+
+    .dive-name { font-size: 13px; font-weight: 500; color: var(--f-white); }
+    .dive-tag { font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--f-cyan-dim); text-transform: uppercase; }
+
+    .dive-add { display: flex; gap: 8px; }
+
+    .dive-input {
+      flex: 1;
+      background: rgba(0,210,255,0.03);
+      border: 1px solid var(--f-border);
+      border-radius: 1px;
+      color: var(--f-white);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      padding: 7px 10px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .dive-input:focus { border-color: var(--f-cyan-dim); }
+    .dive-input::placeholder { color: var(--f-dim); font-size: 12px; }
+
+    .add-btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 7px;
+      letter-spacing: 2px;
+      background: var(--f-cyan-glow);
+      border: 1px solid var(--f-cyan-dim);
+      color: var(--f-cyan);
+      padding: 7px 14px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover { background: rgba(0,210,255,0.12); }
+
+    /* Creative Prompt */
+    .prompt-text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--f-white);
+      margin-bottom: 1rem;
+      padding: 0.85rem;
+      border-left: 2px solid var(--f-amber);
+      background: rgba(255,179,0,0.04);
+    }
+
+    .prompt-text em { color: var(--f-amber); font-style: normal; }
+
+    .prompt-footer { display: flex; justify-content: space-between; align-items: center; }
+
+    .prompt-type {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--f-amber-dim);
+      text-transform: uppercase;
+    }
+
+    /* Recommendations */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .rec-item {
+      padding: 0.75rem 0.85rem;
+      background: rgba(255,45,155,0.04);
+      border: 1px solid rgba(255,45,155,0.12);
+      border-radius: 1px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+
+    .rec-item:hover { background: rgba(255,45,155,0.08); border-color: rgba(255,45,155,0.3); }
+
+    .rec-category { font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--f-pink-dim); text-transform: uppercase; margin-bottom: 5px; }
+    .rec-name { font-size: 13px; font-weight: 600; color: var(--f-white); line-height: 1.3; margin-bottom: 3px; }
+    .rec-note { font-size: 11px; color: var(--f-muted); line-height: 1.4; font-style: italic; }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid var(--f-border);
+      flex-wrap: wrap;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--f-dim);
+      text-transform: uppercase;
+    }
+
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .status-online { background: var(--f-green); box-shadow: 0 0 6px var(--f-green); }
+    .status-idle   { background: var(--f-amber); }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--f-panel);
+      border: 1px solid var(--f-green);
+      color: var(--f-green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+<div class="dash">
+
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">Personal OS // KB</div>
+      <div class="dash-name">MIND <span>&</span> GROWTH</div>
+    </div>
+    <div>
+      <div class="dash-time" id="clock">--:--</div>
+      <div class="dash-date" id="dateline">-- -- --</div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+
+    <!-- Claude Learning -->
+    <div class="panel">
+      <div class="panel-label">
+        <div class="label-dot" style="background:var(--f-cyan);box-shadow:0 0 6px var(--f-cyan)"></div>
+        Claude Knowledge
+      </div>
+      <div class="claude-tip" id="claudeTip"></div>
+      <a class="try-btn" href="https://claude.ai" target="_blank">Try it in Claude →</a>
+      <div class="tip-nav">
+        <div class="tip-counter" id="tipCounter">01 / 08</div>
+        <div class="tip-btns">
+          <button class="icon-btn" onclick="prevTip()">← prev</button>
+          <button class="icon-btn" onclick="nextTip()">next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- French Practice -->
+    <div class="panel span-2">
+      <div class="panel-label">
+        <div class="label-dot" style="background:var(--f-violet);box-shadow:0 0 6px var(--f-violet)"></div>
+        French Practice
+      </div>
+      <div class="french-mode-tabs">
+        <button class="mode-tab active" onclick="setMode('phrase')">Phrase</button>
+        <button class="mode-tab" onclick="setMode('vocab')">Vocabulaire</button>
+        <button class="mode-tab" onclick="setMode('quiz')">Quiz</button>
+      </div>
+      <div class="french-content" id="mode-phrase">
+        <div class="french-phrase" id="phraseText"></div>
+        <div class="french-phonetic" id="phrasePhonetic"></div>
+        <div class="french-translation" id="phraseTranslation"></div>
+        <button class="next-btn" onclick="nextPhrase()">next phrase →</button>
+      </div>
+      <div class="french-content" id="mode-vocab" style="display:none">
+        <div class="vocab-word" id="vocabWord"></div>
+        <div class="vocab-type" id="vocabType"></div>
+        <div class="vocab-example" id="vocabExample"></div>
+        <button class="next-btn" onclick="nextVocab()">next word →</button>
+      </div>
+      <div class="french-content" id="mode-quiz" style="display:none">
+        <div class="french-quiz-prompt" id="quizPrompt"></div>
+        <input class="french-input" id="quizInput" placeholder="Tapez votre réponse..." onkeydown="if(event.key==='Enter')checkQuiz()">
+        <button class="check-btn" onclick="checkQuiz()">Vérifier →</button>
+        <div class="quiz-result" id="quizResult"></div>
+      </div>
+    </div>
+
+    <!-- Deep Dives -->
+    <div class="panel span-2">
+      <div class="panel-label">
+        <div class="label-dot" style="background:var(--f-cyan);box-shadow:0 0 6px var(--f-cyan)"></div>
+        Deep Dives
+      </div>
+      <div class="dive-list" id="diveList"></div>
+      <div class="dive-add">
+        <input class="dive-input" id="diveInput" placeholder="Add a topic to explore..." onkeydown="if(event.key==='Enter')addDive()">
+        <button class="add-btn" onclick="addDive()">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Creative Prompt -->
+    <div class="panel">
+      <div class="panel-label">
+        <div class="label-dot" style="background:var(--f-amber);box-shadow:0 0 6px var(--f-amber)"></div>
+        Creative Prompt
+      </div>
+      <div class="prompt-text" id="promptText"></div>
+      <div class="prompt-footer">
+        <div class="prompt-type" id="promptType"></div>
+        <button class="next-btn" style="margin-top:0" onclick="nextPrompt()">new prompt →</button>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="panel span-3">
+      <div class="panel-label">
+        <div class="label-dot" style="background:var(--f-pink);box-shadow:0 0 6px var(--f-pink)"></div>
+        Curated For You
+      </div>
+      <div class="rec-grid" id="recGrid"></div>
+      <div class="status-bar">
+        <div class="status-item"><div class="status-dot status-online"></div>System online</div>
+        <div class="status-item"><div class="status-dot status-online"></div>All modules active</div>
+        <div class="status-item"><div class="status-dot status-idle"></div>Painting catalog — coming soon</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast">Saved ✓</div>
+
+<script>
+  // Clock
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    const days   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    document.getElementById('dateline').textContent =
+      days[now.getDay()] + ' · ' + months[now.getMonth()] + ' ' + now.getDate() + ' · ' + now.getFullYear();
+  }
+  tick(); setInterval(tick, 10000);
+
+  // Claude Tips
+  const tips = [
+    { text: 'Use <strong>XML tags</strong> to give Claude clear structure. Wrap your brief in <code>&lt;context&gt;</code> tags and your request in <code>&lt;task&gt;</code> tags — Claude reads them as distinct signals.' },
+    { text: 'Ask Claude to <strong>think step by step</strong> before answering. Adding "reason through this carefully before responding" dramatically improves complex outputs.' },
+    { text: '<strong>Negative prompting</strong> works. Tell Claude what NOT to do — "don\'t use bullet points", "avoid hedging language" — and it will honor those constraints precisely.' },
+    { text: 'Claude can hold a <strong>persona</strong> throughout a conversation. Open with "For this session, you are a Parisian art dealer reviewing my pitch" and it will stay in character.' },
+    { text: 'Use <strong>examples</strong> to shape output style. Paste two lines of your own writing and say "match this voice" — Claude will calibrate to your tone, not a generic one.' },
+    { text: 'Ask for <strong>multiple versions</strong> simultaneously. "Give me three opening lines for this poem, each with a different emotional register" is more efficient than iterating one at a time.' },
+    { text: '<strong>Chain prompts</strong> for complex work. Use Claude\'s output as input for the next prompt — draft → critique → refine — rather than trying to do everything in one go.' },
+    { text: 'Claude can <strong>critique its own output</strong>. After a response, ask: "What are the weakest parts of what you just wrote and how would you fix them?"' },
+  ];
+
+  let tipIdx = 0;
+  function renderTip() {
+    document.getElementById('claudeTip').innerHTML = tips[tipIdx].text;
+    document.getElementById('tipCounter').textContent =
+      String(tipIdx + 1).padStart(2,'0') + ' / ' + String(tips.length).padStart(2,'0');
+  }
+  function nextTip() { tipIdx = (tipIdx + 1) % tips.length; renderTip(); }
+  function prevTip() { tipIdx = (tipIdx - 1 + tips.length) % tips.length; renderTip(); }
+  renderTip();
+
+  // French
+  const phrases = [
+    { fr: 'Je me réapproprie mon histoire.', ph: '/ zhuh muh ray-ah-pro-pree mohn ees-twar /', en: 'I am reclaiming my story.' },
+    { fr: "L'art parle là où les mots échouent.", ph: '/ lar parl lah oo lay moh ay-shoo /', en: 'Art speaks where words fail.' },
+    { fr: 'Je suis exactement où je dois être.', ph: '/ zhuh swee eg-zak-tuh-mohn oo zhuh dwah etr /', en: 'I am exactly where I need to be.' },
+    { fr: "Qu'est-ce qui t'inspire aujourd'hui ?", ph: "/ kess kee tan-speer oh-zhoor-dwee /", en: 'What inspires you today?' },
+    { fr: 'Mon travail porte mon nom.', ph: '/ mohn trah-vay port mohn nohn /', en: 'My work carries my name.' },
+    { fr: 'Je construis quelque chose qui dure.', ph: '/ zhuh kon-strwee kel-kuh shoz kee dyoor /', en: 'I am building something that lasts.' },
+  ];
+
+  const vocab = [
+    { word: 'rayonner', type: 'v. — to radiate, to shine', ex: '"Elle rayonne d\'une énergie créative." — She radiates a creative energy.' },
+    { word: 'ancré·e', type: 'adj. — grounded, rooted', ex: '"Être ancré dans ses origines." — To be rooted in one\'s origins.' },
+    { word: 'dévoilement', type: 'n.m. — unveiling, revelation', ex: '"Le dévoilement de l\'œuvre." — The unveiling of the work.' },
+    { word: 'résilience', type: 'n.f. — resilience', ex: '"La résilience comme art de vivre." — Resilience as an art of living.' },
+    { word: 'tisser', type: 'v. — to weave', ex: '"Tisser des liens entre passé et présent." — To weave links between past and present.' },
+    { word: 'lumière', type: 'n.f. — light', ex: '"Mettre en lumière ce qui fut effacé." — To bring to light what was erased.' },
+  ];
+
+  const quizzes = [
+    { q: 'Translate: "My work carries my name."', a: ['mon travail porte mon nom', 'mon travail porte mon nom.'] },
+    { q: 'Translate: "She radiates a creative energy."', a: ["elle rayonne d'une énergie créative", "elle rayonne d'une énergie créative."] },
+    { q: 'What does "ancré·e" mean?', a: ['grounded', 'rooted', 'anchored'] },
+    { q: 'Translate: "Art speaks where words fail."', a: ["l'art parle là où les mots échouent", "l art parle la ou les mots echouent"] },
+    { q: 'What does "tisser" mean?', a: ['to weave', 'weave'] },
+  ];
+
+  let phraseIdx = 0, vocabIdx = 0, quizIdx = 0;
+
+  function renderPhrase() {
+    const p = phrases[phraseIdx];
+    document.getElementById('phraseText').textContent = p.fr;
+    document.getElementById('phrasePhonetic').textContent = p.ph;
+    document.getElementById('phraseTranslation').textContent = p.en;
+  }
+
+  function renderVocab() {
+    const v = vocab[vocabIdx];
+    document.getElementById('vocabWord').textContent = v.word;
+    document.getElementById('vocabType').textContent = v.type;
+    document.getElementById('vocabExample').textContent = v.ex;
+  }
+
+  function renderQuiz() {
+    document.getElementById('quizPrompt').textContent = quizzes[quizIdx].q;
+    document.getElementById('quizInput').value = '';
+    document.getElementById('quizResult').textContent = '';
+    document.getElementById('quizResult').className = 'quiz-result';
+  }
+
+  function nextPhrase() { phraseIdx = (phraseIdx + 1) % phrases.length; renderPhrase(); }
+  function nextVocab()  { vocabIdx  = (vocabIdx  + 1) % vocab.length;   renderVocab(); }
+
+  function checkQuiz() {
+    const input = document.getElementById('quizInput').value.trim().toLowerCase();
+    const correct = quizzes[quizIdx].a.some(a => input === a.toLowerCase());
+    const el = document.getElementById('quizResult');
+    el.textContent = correct ? '✓ Correct — bien fait !' : '✗ Try: ' + quizzes[quizIdx].a[0];
+    el.className = 'quiz-result ' + (correct ? 'result-correct' : 'result-wrong');
+    if (correct) setTimeout(() => { quizIdx = (quizIdx + 1) % quizzes.length; renderQuiz(); }, 1400);
+  }
+
+  function setMode(mode) {
+    ['phrase','vocab','quiz'].forEach(m => {
+      document.getElementById('mode-' + m).style.display = m === mode ? 'block' : 'none';
+    });
+    document.querySelectorAll('.mode-tab').forEach((t, i) => {
+      t.classList.toggle('active', ['phrase','vocab','quiz'][i] === mode);
+    });
+    if (mode === 'phrase') renderPhrase();
+    if (mode === 'vocab')  renderVocab();
+    if (mode === 'quiz')   renderQuiz();
+  }
+
+  renderPhrase(); renderVocab(); renderQuiz();
+
+  // Deep Dives
+  const defaultDives = [
+    { name: 'Shell Grotto, Margate', tag: 'Mystery' },
+    { name: 'Pamela Colman Smith', tag: 'Lineage' },
+    { name: 'Gullah / Geechee culture', tag: 'Ancestral' },
+    { name: 'Cardology & birth cards', tag: 'Esoteric' },
+  ];
+
+  let dives = JSON.parse(localStorage.getItem('kb-dives') || 'null') || defaultDives;
+  function saveDives() { localStorage.setItem('kb-dives', JSON.stringify(dives)); }
+
+  function renderDives() {
+    const list = document.getElementById('diveList');
+    list.innerHTML = '';
+    dives.forEach((d, i) => {
+      const el = document.createElement('div');
+      el.className = 'dive-item';
+      el.innerHTML = `<div class="dive-name">${d.name}</div><div style="display:flex;align-items:center;gap:8px"><div class="dive-tag">${d.tag}</div><span style="color:rgba(0,210,255,0.3);cursor:pointer;font-size:11px;padding:0 4px" onclick="removeDive(${i})">✕</span></div>`;
+      el.querySelector('.dive-name').onclick = () => window.open('https://claude.ai', '_blank');
+      list.appendChild(el);
+    });
+  }
+
+  function addDive() {
+    const input = document.getElementById('diveInput');
+    const val = input.value.trim();
+    if (!val) return;
+    dives.unshift({ name: val, tag: 'Custom' });
+    saveDives(); renderDives();
+    input.value = '';
+  }
+
+  function removeDive(i) { dives.splice(i, 1); saveDives(); renderDives(); }
+  renderDives();
+
+  // Creative Prompts
+  const prompts = [
+    { text: 'Write a poem from the perspective of a color that has never been named. What does it want to be called? What does it feel going unseen?', type: '// poetic' },
+    { text: 'You are your ancestor, three generations back. Write one sentence you needed to hear that never came.', type: '// ancestral' },
+    { text: 'Design a greeting card for someone who needs permission to rest — not encouragement to push through. What does it say?', type: '// design' },
+    { text: 'Your next painting is made entirely of things you almost said. What does it look like? Describe it in five lines.', type: '// visual' },
+    { text: "Write the dedication page of a book that doesn't exist yet but should.", type: '// literary' },
+    { text: 'An oracle card appears with no image — only white space. Write the guidebook entry for it.', type: '// arcana' },
+    { text: "What sound does your creative lineage make? Write it as music, then as weather, then as a single word.", type: '// synesthetic' },
+    { text: "Describe the inside of a room that holds everything you've ever let go of. Is the door open or closed?", type: '// reflective' },
+  ];
+
+  let promptIdx = Math.floor(Math.random() * prompts.length);
+
+  function renderPrompt() {
+    const p = prompts[promptIdx];
+    document.getElementById('promptText').innerHTML = p.text.replace(/\b(paint|poem|card|oracle|ancestor|lineage)\b/gi, '<em>$1</em>');
+    document.getElementById('promptType').textContent = p.type;
+  }
+
+  function nextPrompt() { promptIdx = (promptIdx + 1) % prompts.length; renderPrompt(); }
+  renderPrompt();
+
+  // Recommendations
+  const recs = [
+    { cat: 'Book', name: 'The Warmth of Other Suns', note: 'Isabel Wilkerson — migration, ancestry, the American Black experience', url: 'https://www.google.com/search?q=The+Warmth+of+Other+Suns+Isabel+Wilkerson' },
+    { cat: 'Film', name: 'Daughters of the Dust', note: 'Julie Dash — Gullah Geechee, stunning visual language', url: 'https://www.google.com/search?q=Daughters+of+the+Dust+1991+film' },
+    { cat: 'Artist', name: 'Theaster Gates', note: 'Transforms archives and space into Black cultural memory', url: 'https://www.google.com/search?q=Theaster+Gates+artist' },
+    { cat: 'Listen', name: 'Sade — Soldier of Love', note: 'Full album — discipline, longing, perseverance as form', url: 'https://music.apple.com' },
+    { cat: 'Explore', name: 'Mystery of the Shell Grotto', note: 'Margate\'s unexplained 1835 grotto — origin still unknown', url: 'https://www.google.com/search?q=Shell+Grotto+Margate+mystery' },
+    { cat: 'Read', name: 'Rumi — The Guest House', note: 'Poem — every emotion as a visitor worth welcoming', url: 'https://www.google.com/search?q=Rumi+The+Guest+House+poem' },
+  ];
+
+  const recGrid = document.getElementById('recGrid');
+  recs.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'rec-item';
+    el.href = r.url;
+    el.target = '_blank';
+    el.innerHTML = `<div class="rec-category">${r.cat}</div><div class="rec-name">${r.name}</div><div class="rec-note">${r.note}</div>`;
+    recGrid.appendChild(el);
+  });
+</script>
+</body>
+</html>
