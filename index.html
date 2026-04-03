@@ -329,6 +329,27 @@
     .pulse { animation: blink 2s ease-in-out infinite; display: inline-block; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
+    /* Affirmation */
+    .aff-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--kb-cream);
+      border-left: 2px solid var(--kb-yellow);
+      padding-left: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .aff-source {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--kb-taupe);
+    }
+
+    .aff-source span { color: var(--kb-yellow); }
+
     /* Saved toast */
     #toast {
       position: fixed;
@@ -468,6 +489,15 @@
       </div>
     </div>
 
+    <!-- Daily Affirmation -->
+    <div class="hub-card span-3">
+      <div class="card-label">
+        <span class="accent-bar" style="background:var(--kb-yellow)"></span>Today's Recognition
+      </div>
+      <div class="aff-quote" id="affQuote"></div>
+      <div class="aff-source" id="affSource"></div>
+    </div>
+
     <!-- Quick Links -->
     <div class="hub-card span-3">
       <div class="card-label">
@@ -558,6 +588,25 @@
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2000);
   }
+
+  // Daily affirmation — one per day, cycles through 10
+  const affirmations = [
+    { q: 'Krystal Banner from Kaleidadope is one of the Ten Designers to Watch in 2022. Colorful, modern and bold — there is a not-so-subtle attempt to incorporate every color on the color wheel while injecting humor and representation.', s: 'Stationery Trends Magazine', y: '2022' },
+    { q: 'I feel a strong responsibility to be an artistic voice and illustrate my truth. My truth is what is authentic to me as a Black woman, as an artist and as someone who understands the power of visuals and how that can influence what someone believes about themselves and the world.', s: 'Asali Earthwork — QTPOC Tarot Interview Series', y: '' },
+    { q: 'I\'m most proud of how my passion for art, design and self-discovery has resonated with others through authenticity. I have stayed true to my own journey and what inspires me — to see people supporting and aligning with what I do is super humbling.', s: 'Voyage ATL Magazine', y: '' },
+    { q: 'The founder of Kaleidadope shares how she journeyed from engineer to designer of tarot card decks and other colorful stationery goods — featured in GDA\'s Meet the Maker series.', s: 'Gifts & Decorative Accessories Magazine', y: '2022' },
+    { q: 'I\'d say the response has been a mix of "Wow, this is cool" and "This is a breath of fresh air." I wanted to create what I would want — what would stand out to me on the shelf.', s: 'Little Red Tarot', y: '' },
+    { q: 'My products are like a Trojan horse: the colors and aesthetics draw people in, but there is something deeper that encourages connection through laughter, shared experiences and self-discovery.', s: 'Faire Wholesale', y: '' },
+    { q: 'Banner\'s small Washington, D.C.-based company, Kaleidadope, is flourishing. "I was preparing for everything to be shut down, but it became crazy."', s: 'The Spokesman-Review', y: '2021' },
+    { q: 'Kaleidadope celebrates discovering passion and purpose through creativity, positivity, a sense of humor and individuality — a creative hub inspired by color & culture.', s: 'Brand Recognition', y: '' },
+    { q: 'I continued to create even when sales were low and no one knew anything of Kaleidadope. The struggles and challenges have taught me about my resilience, strength and capabilities.', s: 'Voyage ATL Magazine', y: '' },
+    { q: 'Krystal\'s playful digital art is rooted in themes of Black popular culture and representation — creator of the Kaleidadope Tarot, the Astrol-OG deck, and many others.', s: 'Little Red Tarot', y: 'Recognition' },
+  ];
+
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const todayAff  = affirmations[dayOfYear % affirmations.length];
+  document.getElementById('affQuote').textContent  = '\u201C' + todayAff.q + '\u201D';
+  document.getElementById('affSource').innerHTML   = '<span>' + todayAff.s + '</span>' + (todayAff.y ? ' \u00B7 ' + todayAff.y : '');
 </script>
 </body>
 </html>
