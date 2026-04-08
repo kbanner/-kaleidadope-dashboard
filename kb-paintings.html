@@ -222,6 +222,7 @@
     .s-gifted    { color: #6b5fa8; }
     .s-display   { color: #b07a2a; }
     .s-wip       { color: #b05a2a; }
+    .s-nfs       { color: #888580; font-style: italic; }
 
     /* List View */
     .list-view { display: none; }
@@ -518,6 +519,7 @@
         <button class="filter-btn" onclick="setFilter('gifted', this)">Gifted</button>
         <button class="filter-btn" onclick="setFilter('display', this)">On Display</button>
         <button class="filter-btn" onclick="setFilter('wip', this)">WIP</button>
+        <button class="filter-btn" onclick="setFilter('nfs', this)">Not for Sale</button>
       </div>
       <div class="toolbar-right">
         <div class="view-toggle">
@@ -598,6 +600,7 @@
           <option value="gifted">Gifted</option>
           <option value="display">On Display</option>
           <option value="wip">Work in Progress</option>
+          <option value="nfs">Not for Sale</option>
         </select>
       </div>
     </div>
@@ -662,11 +665,11 @@
   function save() { localStorage.setItem(STORE_KEY, JSON.stringify(paintings)); }
 
   function statusLabel(s) {
-    return { available: 'Available', sold: 'Sold', gifted: 'Gifted', display: 'On Display', wip: 'In Progress' }[s] || s;
+    return { available: 'Available', sold: 'Sold', gifted: 'Gifted', display: 'On Display', wip: 'In Progress', nfs: 'Not for Sale' }[s] || s;
   }
 
   function statusClass(s) {
-    return { available: 's-available', sold: 's-sold', gifted: 's-gifted', display: 's-display', wip: 's-wip' }[s] || '';
+    return { available: 's-available', sold: 's-sold', gifted: 's-gifted', display: 's-display', wip: 's-wip', nfs: 's-nfs' }[s] || '';
   }
 
   function updateStats() {
